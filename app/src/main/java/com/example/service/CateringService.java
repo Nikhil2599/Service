@@ -2,6 +2,7 @@ package com.example.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -22,7 +23,10 @@ public class CateringService extends Service {
         super.onStartCommand(intent, flags, startId);
         String filename = intent.getStringExtra("mkey");
         Log.i(TAG, "onStartCommand: "+filename);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.mymusic);
+        mediaPlayer.start();
         return START_STICKY;
+
     }
 
     @Override
