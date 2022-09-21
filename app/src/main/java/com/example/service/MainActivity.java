@@ -1,9 +1,15 @@
 package com.example.service;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,6 +37,28 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnstop:
                 stopService(serviceIntent);
                 break;
+            case R.id.btnBind:
+                bindService(serviceIntent,serviceConnection,BIND_AUTO_CREATE);
+                break;
+            case R.id.btnUnbind:
+                unbindService(serviceConnection);
+                break;
         }
     }
+    CateringService cateringService;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+            CateringService.LocalBinder localBinder = (CateringService.LocalBinder) binder;
+            cateringService = localBinder.getService();
+            Log.i(TAG, "sum of 10,43 is: "+ cateringService.add(10,43));
+            Log.i(TAG, "latest ads are: "+cateringService.getAds());
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 }
